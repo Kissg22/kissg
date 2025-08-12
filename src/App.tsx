@@ -576,7 +576,6 @@ const ProjectListItem: React.FC<{ project: any; onSelect: () => void }> = React.
     </button>
   )
 );
-
 // ------------------------------------------------------------
 // MODAL (fókuszkezelés + ESC + háttér-scroll lock)
 // ------------------------------------------------------------
