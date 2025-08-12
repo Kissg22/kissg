@@ -4,5 +4,5 @@ import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
-  base: '/kissg.github.io/',   // <-- EZ A LÉNYEG, mert project site
+  base: '/kissg',   // <-- EZ A LÉNYEG, mert project site
 })
