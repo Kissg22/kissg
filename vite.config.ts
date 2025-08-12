@@ -1,8 +1,8 @@
+// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/', // user site-hoz marad '/'
+  base: '/kissg.github.io/',   // <-- EZ A LÉNYEG, mert project site
 })
