@@ -20,7 +20,7 @@ import { AnimatePresence, motion } from "framer-motion";
 // ------------------------------------------------------------
 export default function App() {
   // --- Téma kezelés (persist + system preferencia) ---
-  const getInitialTheme = () => {
+  const getInitialTheme = (): 'light' | 'dark' => {
     if (typeof window === "undefined") return "dark";
     const stored = localStorage.getItem("theme");
     if (stored === "light" || stored === "dark") return stored;
@@ -29,7 +29,7 @@ export default function App() {
       : "light";
   };
 
-  const [theme, setTheme] = useState(getInitialTheme);
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
@@ -734,4 +734,4 @@ const SkipToContent: React.FC = () => (
   >
     Ugrás a tartalomra
   </a>
-);
+)
