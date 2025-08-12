@@ -29,7 +29,7 @@ export default function App() {
       : "light";
   };
 
-  const [theme, setTheme] = useState<"light" | "dark">(getInitialTheme);
+  const [theme, setTheme] = useState(getInitialTheme);
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
@@ -44,16 +44,18 @@ export default function App() {
   useEffect(() => {
     const navbarHeight = 88; // px
     const options: IntersectionObserverInit = {
+      // úgy vágjuk meg a root-ot, hogy a sticky navbar-t figyelembe vegyük
       root: null,
       rootMargin: `-${navbarHeight + 4}px 0px -60% 0px`,
       threshold: [0.1, 0.25, 0.5, 0.75, 1],
     };
 
     observerRef.current = new IntersectionObserver((entries) => {
+      // A legnagyobb látható arányú szekció legyen aktív
       const visible = entries
         .filter((e) => e.isIntersecting)
         .sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0));
-      if (visible[0]?.target?.id) setActiveSection((visible[0].target as HTMLElement).id);
+      if (visible[0]?.target?.id) setActiveSection(visible[0].target.id);
     }, options);
 
     sectionIds.forEach((id) => {
@@ -108,6 +110,7 @@ const Navbar: React.FC<{
   ];
 
   useEffect(() => {
+    // Ha nyitva a mobil menü, ne scrollozzon a háttér
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
