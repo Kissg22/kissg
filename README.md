@@ -1,7 +1,6 @@
 # Kiss Gábor — Portfolio (GitHub Pages, Vite + React + TS + Tailwind)
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/kissg22/kissg/main/public/images/profil.png" alt="Kiss Gábor" width="150" style="border-radius: 50%;">
   <h1>Kiss Gábor</h1>
   <h3>Full-Stack Fejlesztő</h3>
 </div>
