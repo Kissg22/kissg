@@ -1,8 +1,9 @@
-// vite.config.ts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
+// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: '/kissg/',     // <-- KELL a záró perjel
+  // EZ A SOR A LÉNYEG: megadjuk a repository nevét, mint alap útvonal.
+  base: '/kissg/', 
 })
