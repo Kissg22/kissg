@@ -21,7 +21,8 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function App() {
   // --- Téma kezelés (persist + system preferencia) ---
   const getInitialTheme = (): 'light' | 'dark' => {
-    if (typeof window === "undefined") return "dark";
+    // Ez a függvény már csak a kliens oldalon fog lefutni,
+    // így a 'window' objektum mindig elérhető lesz.
     const stored = localStorage.getItem("theme");
     if (stored === "light" || stored === "dark") return stored;
     return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -29,11 +30,23 @@ export default function App() {
       : "light";
   };
 
-  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+  // Kezdetben 'dark' témával indulunk, hogy elkerüljük a villanást a statikus build miatt.
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  // JAVÍTÁS: Ez a useEffect csak egyszer fut le, a kliens oldali betöltődés után.
+  // Beállítja a valós, mentett vagy rendszer-preferált témát.
+  useEffect(() => {
+    setTheme(getInitialTheme());
+  }, []);
+
+  // Ez a useEffect felelős a class és a localStorage frissítéséért, amikor a téma változik.
   useEffect(() => {
     const root = document.documentElement;
     root.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("theme", theme);
+    // Csak akkor mentsünk, ha már betöltődött a kliens oldali állapot.
+    if (typeof window !== 'undefined') {
+        localStorage.setItem("theme", theme);
+    }
   }, [theme]);
 
   // --- Aktív szekció figyelése IntersectionObserver-rel ---
