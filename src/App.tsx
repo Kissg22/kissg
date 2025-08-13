@@ -193,15 +193,7 @@ const Navbar: React.FC<{
             >
               {item.label}
             </a>
-          ))}
-          <a
-            href="#admin"
-            className="font-medium text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 rounded"
-            title="Admin felület (rejtett)"
-          >
-            Admin
-          </a>
-        </nav>
+          ))}</nav>
 
         <div className="flex items-center gap-2">
           <button
@@ -252,17 +244,7 @@ const Navbar: React.FC<{
                     {id === "kapcsolat" && "Kapcsolat"}
                   </a>
                 </li>
-              ))}
-              <li>
-                <a
-                  href="#admin"
-                  onClick={() => setMobileOpen(false)}
-                  className="block px-3 py-2 rounded-md font-medium text-gray-500 hover:text-indigo-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-indigo-400 dark:hover:bg-slate-800"
-                >
-                  Admin
-                </a>
-              </li>
-            </ul>
+              ))}</ul>
           </motion.nav>
         )}
       </AnimatePresence>
@@ -806,4 +788,3 @@ const SkipToContent: React.FC = () => (
     Ugrás a tartalomra
   </a>
 );
-

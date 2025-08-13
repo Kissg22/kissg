@@ -112,13 +112,6 @@ export function AdminPanel({ onExit }: { onExit: () => void }) {
   const [hasPin, setHasPin] = useState<boolean>(() => localStorage.getItem("kg_admin_pin_ok") === "1");
   const [pin, setPin] = useState("");
 
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, []);
-
   if (!hasPin) {
     return (
       <div className="min-h-[calc(100vh-88px)] flex items-center justify-center p-6">
@@ -320,7 +313,7 @@ function AddProjectForm({ onAdd }: { onAdd: (p: Omit<Project, "id">) => void }) 
           />
         </div>
         <div>
-          <label className="block text-sm font-medium mb-1">GitHub URL</label>
+          <label className="block textsm font-medium mb-1">GitHub URL</label>
           <input
             value={repoUrl}
             onChange={(e) => setRepoUrl(e.target.value)}
