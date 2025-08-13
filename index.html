@@ -5,9 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kiss Gábor — Portfolio</title>
     <meta name="description" content="Kiss Gábor szoftverfejlesztő portfóliója" />
+    <meta name="color-scheme" content="dark light" />
+    <script>
+      (() => {
+        try {
+          const storage = localStorage.getItem('theme');
+          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.classList.toggle('dark', storage ? storage === 'dark' : systemDark);
+        } catch {
+          document.documentElement.classList.remove('dark');
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
+    <!-- fejlesztéskor Vite ezt tölti be; buildkor automatikusan kicseréli a hash-elt fájlokra -->
     <script type="module" src="/src/main.tsx"></script>
     <noscript>Kérlek engedélyezd a JavaScriptet a megtekintéshez.</noscript>
   </body>

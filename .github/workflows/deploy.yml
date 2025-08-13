@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -23,13 +23,13 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci || npm i
+      - run: npm ci --no-audit --fund=false || npm i
       - run: npm run build
-      # SPA fallback, hogy a Pages ne dobjon 404-et client-side route-oknál
+      # SPA fallback (client-side route-ok ne 404-ozzanak)
       - run: cp dist/index.html dist/404.html
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: ./dist
+          path: dist
 
   deploy:
     needs: build
