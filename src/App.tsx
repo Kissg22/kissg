@@ -24,26 +24,17 @@ export default function App() {
     if (typeof window === "undefined") return 'dark';
     const stored = localStorage.getItem("theme");
     if (stored === "light" || stored === "dark") return stored;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches
-      ? "dark"
-      : "light";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
   };
 
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  // Lusta inicializáló -> első render előtt jó téma lesz
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => getInitialTheme());
 
-  useEffect(() => {
-    // Ez a useEffect csak a kliens oldalon fut le, miután a komponens betöltődött.
-    setTheme(getInitialTheme());
-  }, []);
-
+  // Változáskor írjuk az <html> class-t és a localStorage-t
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === 'dark') {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-    localStorage.setItem("theme", theme);
+    root.classList.toggle("dark", theme === "dark");
+    try { localStorage.setItem("theme", theme); } catch {}
   }, [theme]);
 
   // --- Aktív szekció figyelése IntersectionObserver-rel ---
@@ -119,9 +110,7 @@ const Navbar: React.FC<{
 
   useEffect(() => {
     document.body.style.overflow = mobileOpen ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
   return (
@@ -289,18 +278,9 @@ const AboutSection: React.FC = () => (
             <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Amiben hiszek</h3>
             <ul className="space-y-5">
               {[
-                {
-                  t: "Automatizálás",
-                  d: "Hiszek a hatékony, automatizált rendszerek építésében, amelyek csökkentik a manuális munkát.",
-                },
-                {
-                  t: "Csapatmunka",
-                  d: "A legjobb eredményeket szoros együttműködéssel, közös gondolkodással lehet elérni.",
-                },
-                {
-                  t: "Folyamatos tanulás",
-                  d: "A technológia világa állandóan változik, a fejlődés kulcsfontosságú.",
-                },
+                { t: "Automatizálás", d: "Hiszek a hatékony, automatizált rendszerek építésében, amelyek csökkentik a manuális munkát." },
+                { t: "Csapatmunka", d: "A legjobb eredményeket szoros együttműködéssel, közös gondolkodással lehet elérni." },
+                { t: "Folyamatos tanulás", d: "A technológia világa állandóan változik, a fejlődés kulcsfontosságú." },
               ].map((i) => (
                 <li key={i.t} className="flex items-start">
                   <span className="flex-shrink-0 bg-indigo-500 h-2 w-2 rounded-full mr-4 mt-2.5" />
@@ -320,29 +300,9 @@ const AboutSection: React.FC = () => (
         </h3>
         <div className="flex flex-wrap gap-3 justify-center">
           {[
-            "HTML/CSS",
-            "JavaScript",
-            "TypeScript",
-            "React",
-            "Vue.js",
-            "Node.js",
-            "PHP",
-            ".NET",
-            "Flutter",
-            "MySQL",
-            "PostgreSQL",
-            "MongoDB",
-            "Shopify",
-            "WordPress",
-            "Google Cloud",
-            "Azure",
-            "AWS",
-            "Docker",
-            "Google Sheets API",
-            "Stripe API",
-            "REST API",
-            "GraphQL",
-            "Git",
+            "HTML/CSS","JavaScript","TypeScript","React","Vue.js","Node.js","PHP",".NET","Flutter",
+            "MySQL","PostgreSQL","MongoDB","Shopify","WordPress","Google Cloud","Azure","AWS","Docker",
+            "Google Sheets API","Stripe API","REST API","GraphQL","Git",
           ].map((skill) => (
             <span
               key={skill}
@@ -509,8 +469,8 @@ const ProjectsSection: React.FC = () => {
 
       <AnimatePresence>
         {selectedProject && (
-          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />)
-        }
+          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+        )}
       </AnimatePresence>
     </section>
   );
@@ -610,11 +570,8 @@ const ProjectModal: React.FC<{ project: any; onClose: () => void }> = ({ project
     };
 
     document.addEventListener("keydown", onKey);
-    // háttér scroll tiltás
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-
-    // első fókusz
     closeBtnRef.current?.focus();
 
     return () => {
@@ -738,4 +695,4 @@ const SkipToContent: React.FC = () => (
   >
     Ugrás a tartalomra
   </a>
-)
+);

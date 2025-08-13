@@ -1,13 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  // EZ A SOR ENGEDÉLYEZI A TÉMA VÁLTÁST
-  darkMode: "class", 
-  theme: {
-    extend: {},
-  },
+  darkMode: 'class',   // <-- EZ A LÉNYEG
+  content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}'],
+  theme: { extend: {} },
   plugins: [],
 }
