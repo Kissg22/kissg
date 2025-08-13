@@ -21,32 +21,29 @@ import { AnimatePresence, motion } from "framer-motion";
 export default function App() {
   // --- Téma kezelés (persist + system preferencia) ---
   const getInitialTheme = (): 'light' | 'dark' => {
-    // Ez a függvény már csak a kliens oldalon fog lefutni,
-    // így a 'window' objektum mindig elérhető lesz.
+    if (typeof window === "undefined") return 'dark';
     const stored = localStorage.getItem("theme");
     if (stored === "light" || stored === "dark") return stored;
-    return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
       : "light";
   };
 
-  // Kezdetben 'dark' témával indulunk, hogy elkerüljük a villanást a statikus build miatt.
   const [theme, setTheme] = useState<'light' | 'dark'>('dark');
 
-  // JAVÍTÁS: Ez a useEffect csak egyszer fut le, a kliens oldali betöltődés után.
-  // Beállítja a valós, mentett vagy rendszer-preferált témát.
   useEffect(() => {
+    // Ez a useEffect csak a kliens oldalon fut le, miután a komponens betöltődött.
     setTheme(getInitialTheme());
   }, []);
 
-  // Ez a useEffect felelős a class és a localStorage frissítéséért, amikor a téma változik.
   useEffect(() => {
     const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
-    // Csak akkor mentsünk, ha már betöltődött a kliens oldali állapot.
-    if (typeof window !== 'undefined') {
-        localStorage.setItem("theme", theme);
+    if (theme === 'dark') {
+      root.classList.add('dark');
+    } else {
+      root.classList.remove('dark');
     }
+    localStorage.setItem("theme", theme);
   }, [theme]);
 
   // --- Aktív szekció figyelése IntersectionObserver-rel ---
@@ -57,14 +54,12 @@ export default function App() {
   useEffect(() => {
     const navbarHeight = 88; // px
     const options: IntersectionObserverInit = {
-      // úgy vágjuk meg a root-ot, hogy a sticky navbar-t figyelembe vegyük
       root: null,
       rootMargin: `-${navbarHeight + 4}px 0px -60% 0px`,
       threshold: [0.1, 0.25, 0.5, 0.75, 1],
     };
 
     observerRef.current = new IntersectionObserver((entries) => {
-      // A legnagyobb látható arányú szekció legyen aktív
       const visible = entries
         .filter((e) => e.isIntersecting)
         .sort((a, b) => (b.intersectionRatio || 0) - (a.intersectionRatio || 0));
@@ -123,7 +118,6 @@ const Navbar: React.FC<{
   ];
 
   useEffect(() => {
-    // Ha nyitva a mobil menü, ne scrollozzon a háttér
     document.body.style.overflow = mobileOpen ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
@@ -139,7 +133,6 @@ const Navbar: React.FC<{
           <span className="text-indigo-500">{' />'}</span>
         </a>
 
-        {/* Desktop nav */}
         <nav className="hidden md:flex items-center space-x-8" aria-label="Fő navigáció">
           {navItems.map((item) => (
             <a
@@ -157,7 +150,6 @@ const Navbar: React.FC<{
           ))}
         </nav>
 
-        {/* Actions */}
         <div className="flex items-center gap-2">
           <button
             onClick={toggleTheme}
@@ -179,7 +171,6 @@ const Navbar: React.FC<{
         </div>
       </div>
 
-      {/* Mobile sheet */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.nav
