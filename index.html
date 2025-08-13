@@ -9,18 +9,16 @@
     <script>
       (() => {
         try {
-          const storage = localStorage.getItem('theme');
-          const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          document.documentElement.classList.toggle('dark', storage ? storage === 'dark' : systemDark);
-        } catch {
-          document.documentElement.classList.remove('dark');
-        }
+          const pref = localStorage.getItem('theme');
+          const sys = matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.classList.toggle('dark', pref ? pref === 'dark' : sys);
+        } catch {}
       })();
     </script>
   </head>
   <body>
     <div id="root"></div>
-    <!-- fejlesztéskor Vite ezt tölti be; buildkor automatikusan kicseréli a hash-elt fájlokra -->
+    <!-- fejlesztéskor Vite ezt tölti be; buildkor Vite kicseréli hash-elt assetekre -->
     <script type="module" src="/src/main.tsx"></script>
     <noscript>Kérlek engedélyezd a JavaScriptet a megtekintéshez.</noscript>
   </body>

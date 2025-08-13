@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  darkMode: 'class',   // <-- EZ A LÉNYEG
+module.exports = {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{ts,tsx,js,jsx}'],
   theme: { extend: {} },
   plugins: [],
